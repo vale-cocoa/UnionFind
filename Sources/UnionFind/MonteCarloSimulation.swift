@@ -18,14 +18,18 @@
 //  IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //
 
+/// A data structure for simulating percolation in an interconnected matrix of nodes –a.k.a. sites–.
 public struct MonteCarloSimulation {
+    /// An Int value representing the number of sites per side in this instance's matrix.
     public let sideCount: Int
     
+    /// An Int value representing the total number of sitess in this instance's matrix.
     public let sitesCount: Int
     
+    /// An Int value representing the total number of sites open in this intance's matrix.
     public var openSitesCount = 0
     
-    public private(set) var elements: [Bool]
+    private(set) var elements: [Bool]
     
     private(set) var unionFind: UnionFind
     
@@ -33,6 +37,13 @@ public struct MonteCarloSimulation {
     
     let virtualBottom: Int
     
+    /// Returns a new instance initialized to have the number of specified sites per side in its
+    /// matrix. Every site will be closed.
+    ///
+    /// - Parameter _:  An Int value representing the number of sites per side for the
+    /// matrix. **Must be greater than or equal to 5**. Defaults to `5`.
+    /// - Returns:  A new instance with a matrix of sites of *k* by *k* size,
+    ///             where *k* is equal to the specified `sideCount` parameter.
     public init(_ sideCount: Int = 5) {
         precondition(sideCount >= 5, "Must use a value greater than or equal to 5")
         self.sideCount = sideCount
@@ -51,12 +62,17 @@ public struct MonteCarloSimulation {
 }
 
 extension MonteCarloSimulation {
+    /// A Double value representing the threshold of value of open sites by total number of sites
+    /// since where the system should be percolating.
     public static let pThreshold: Double = /*0.592746*/ 0.596
     
+    /// A Boolean value, `true` when the system is percolating, otherwise `false`.
     public var isPercolating: Bool {
         unionFind._fastRootOf(virtualTop) == unionFind._fastRootOf(virtualBottom)
     }
     
+    /// A Double value representing the number of sites opened divided by
+    /// the total count of sites.
     public var p: Double {
         Double(openSitesCount) / Double(sitesCount)
     }
@@ -64,6 +80,7 @@ extension MonteCarloSimulation {
 }
 
 extension MonteCarloSimulation {
+    /// Opens closed a site, randomly picked.
     public mutating func openRandomSite() {
         guard sitesCount != openSitesCount else { return }
         

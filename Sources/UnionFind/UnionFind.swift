@@ -39,7 +39,7 @@ public struct UnionFind {
     /// without any connection between them.
     ///
     /// - Parameter _:  An Int value representing the number of nodes for the new
-    ///                 instance. **Must not be negative**.
+    ///                 instance. **Must not be negative**. Defaults to `0`.
     /// - Returns:  A new instance with the specified number of nodes,
     ///             without any connection between them.
     public init(_ k: Int = 0) {
